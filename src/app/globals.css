@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Naguib Selim brand — warm brown / bronze on white & charcoal */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 26% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 26% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 26% 14%;
+    --primary: 28 46% 37%;              /* bronze/brown (logo NS) */
+    --primary-foreground: 40 33% 97%;
+    --secondary: 32 30% 95%;
+    --secondary-foreground: 26 40% 24%;
+    --muted: 32 24% 95%;
+    --muted-foreground: 28 10% 42%;
+    --accent: 32 34% 93%;
+    --accent-foreground: 26 42% 24%;
+    --destructive: 0 65% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 55% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 34 82% 46%;
+    --warning-foreground: 0 0% 100%;
+    --border: 30 22% 88%;
+    --input: 30 22% 88%;
+    --ring: 28 46% 37%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 214 24% 12%;          /* charcoal (logo background) */
+    --foreground: 40 30% 92%;
+    --card: 214 22% 15%;
+    --card-foreground: 40 30% 92%;
+    --popover: 214 22% 15%;
+    --popover-foreground: 40 30% 92%;
+    --primary: 30 50% 52%;              /* brighter bronze on dark */
+    --primary-foreground: 214 28% 10%;
+    --secondary: 214 16% 20%;
+    --secondary-foreground: 40 30% 92%;
+    --muted: 214 16% 18%;
+    --muted-foreground: 32 14% 68%;
+    --accent: 214 16% 22%;
+    --accent-foreground: 40 30% 92%;
+    --destructive: 0 60% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 48% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 34 78% 50%;
+    --warning-foreground: 214 28% 10%;
+    --border: 214 16% 24%;
+    --input: 214 16% 26%;
+    --ring: 30 50% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    @apply bg-primary/20;
+  }
+}
+
+@layer utilities {
+  /* subtle scrollbars */
+  .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30 rounded-full;
+  }
+  .glass {
+    @apply bg-background/70 backdrop-blur-xl backdrop-saturate-150;
+  }
+  .shimmer {
+    background: linear-gradient(90deg, transparent, hsl(var(--muted-foreground) / 0.08), transparent);
+    background-size: 200% 100%;
+  }
+}
+
+/* Rich-text (prose) rendering for article content */
+.prose-content {
+  @apply text-[15px] leading-7 text-foreground/90;
+}
+.prose-content h2 { @apply text-2xl font-semibold mt-10 mb-3 tracking-tight; }
+.prose-content h3 { @apply text-xl font-semibold mt-8 mb-2 tracking-tight; }
+.prose-content p { @apply my-4; }
+.prose-content ul { @apply my-4 list-disc pl-6 space-y-1.5; }
+.prose-content ol { @apply my-4 list-decimal pl-6 space-y-1.5; }
+.prose-content blockquote { @apply border-l-4 border-primary/40 pl-4 italic text-muted-foreground my-6; }
+.prose-content a { @apply text-primary underline underline-offset-4; }
+.prose-content code { @apply rounded bg-muted px-1.5 py-0.5 text-sm font-mono; }
+.prose-content pre { @apply rounded-xl bg-secondary p-4 overflow-x-auto my-6 text-sm; }
+.prose-content pre code { @apply bg-transparent p-0; }
+.prose-content img { @apply rounded-xl my-6 shadow-soft; }
+.prose-content table { @apply w-full my-6 border-collapse text-sm; }
+.prose-content th, .prose-content td { @apply border border-border px-3 py-2 text-start align-top; }
+.prose-content th { @apply bg-muted font-semibold; }
