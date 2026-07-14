@@ -19,6 +19,9 @@ export interface Category {
   image: string | null;
   order: number;
   active: boolean;
+  lang?: string | null;
+  name_alt?: string | null;
+  description_alt?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -45,6 +48,11 @@ export interface Article {
   likes: number;
   search_count: number;
   published_at: string | null;
+  lang?: string | null;
+  title_alt?: string | null;
+  summary_alt?: string | null;
+  content_alt?: unknown | null;
+  content_text_alt?: string | null;
   created_at: string;
   updated_at: string;
 }

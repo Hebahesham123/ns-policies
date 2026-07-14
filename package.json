@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "import:content": "node scripts/import-content.mjs"
+    "import:content": "node scripts/import-content.mjs",
+    "translate:content": "node scripts/translate-content.mjs"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.2",

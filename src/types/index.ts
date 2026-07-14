@@ -3,7 +3,7 @@ import type { Article, Category } from "./database";
 
 /** Article joined with its category (common list/detail shape). */
 export interface ArticleWithCategory extends Article {
-  category: Pick<Category, "id" | "name" | "slug" | "color" | "icon"> | null;
+  category: Pick<Category, "id" | "name" | "slug" | "color" | "icon" | "lang" | "name_alt"> | null;
 }
 
 export interface CategoryWithCount extends Category {

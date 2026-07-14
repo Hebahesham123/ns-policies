@@ -38,8 +38,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning className={cairo.variable}>
+    <html lang="ar" dir="rtl" data-lang="ar" suppressHydrationWarning className={cairo.variable}>
       <body className="min-h-dvh font-sans">
+        {/* Apply the stored language before paint (default Arabic) to avoid a flash. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var l=localStorage.getItem('ns_lang');if(l==='en'){var e=document.documentElement;e.dataset.lang='en';e.lang='en';e.dir='ltr';}}catch(e){}})();`,
+          }}
+        />
         <ThemeProvider>
           {children}
           <Toaster position="top-center" richColors dir="rtl" />

@@ -6,6 +6,8 @@ import { Menu, X } from "lucide-react";
 import * as React from "react";
 import { CommandPalette } from "@/features/search/command-palette";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageToggle } from "@/components/lang/language-toggle";
+import { Bi } from "@/components/lang/bi";
 import { Button } from "@/components/ui/button";
 import { NAV, SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -34,7 +36,7 @@ export function Navbar() {
                   active ? "bg-accent text-foreground" : "text-muted-foreground hover:bg-accent hover:text-foreground",
                 )}
               >
-                {item.label}
+                <Bi ar={item.label} en={item.en} />
               </Link>
             );
           })}
@@ -42,9 +44,10 @@ export function Navbar() {
 
         <div className="ms-auto flex items-center gap-2">
           <CommandPalette />
+          <LanguageToggle />
           <ThemeToggle />
           <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
-            <Link href="/admin">لوحة التحكم</Link>
+            <Link href="/admin"><Bi ar="لوحة التحكم" en="Admin" /></Link>
           </Button>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen((o) => !o)} aria-label="القائمة">
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -62,11 +65,11 @@ export function Navbar() {
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-foreground"
               >
-                {item.label}
+                <Bi ar={item.label} en={item.en} />
               </Link>
             ))}
             <Link href="/admin" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm font-medium text-primary">
-              لوحة تحكم الإدارة
+              <Bi ar="لوحة تحكم الإدارة" en="Admin dashboard" />
             </Link>
           </nav>
         </div>

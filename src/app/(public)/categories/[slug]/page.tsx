@@ -7,6 +7,8 @@ import { ArticleGrid } from "@/components/article-grid";
 import { EmptyState } from "@/components/empty-state";
 import { getCategoryBySlug, listCategoriesWithCounts, listCategorySlugs } from "@/services/catalog";
 import { listArticles } from "@/services/articles";
+import { Bi } from "@/components/lang/bi";
+import { bothLangs } from "@/lib/i18n";
 
 export const revalidate = 300;
 
@@ -36,9 +38,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const parent = category.parent_id ? flat.find((c) => c.id === category.parent_id) ?? null : null;
   const color = category.color ?? "#6366f1";
 
-  const crumbs: Crumb[] = [{ label: "الأقسام", href: "/categories" }];
-  if (parent) crumbs.push({ label: parent.name, href: `/categories/${parent.slug}` });
-  crumbs.push({ label: category.name });
+  const name = bothLangs(category.name, category.name_alt, category.lang);
+  const desc = bothLangs(category.description, category.description_alt, category.lang);
+
+  const crumbs: Crumb[] = [{ label: <Bi ar="الأقسام" en="Categories" />, href: "/categories" }];
+  if (parent) {
+    const pn = bothLangs(parent.name, parent.name_alt, parent.lang);
+    crumbs.push({ label: <Bi ar={pn.ar} en={pn.en} />, href: `/categories/${parent.slug}` });
+  }
+  crumbs.push({ label: <Bi ar={name.ar} en={name.en} /> });
 
   return (
     <div className="container py-8">
@@ -49,11 +57,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           <Icon name={category.icon} className="size-7" />
         </span>
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">{category.name}</h1>
-          {category.description && <p className="mt-1 text-muted-foreground">{category.description}</p>}
+          <h1 className="text-3xl font-bold tracking-tight"><Bi ar={name.ar} en={name.en} /></h1>
+          {(desc.ar || desc.en) && <p className="mt-1 text-muted-foreground"><Bi ar={desc.ar} en={desc.en} /></p>}
           <p className="mt-2 text-sm text-muted-foreground">
-            {items.length} {items.length === 1 ? "مقال" : "مقالات"}
-            {subcategories.length > 0 ? ` · ${subcategories.length} قسم فرعي` : ""}
+            {items.length} <Bi ar="مقالات" en="articles" />
+            {subcategories.length > 0 ? <> · {subcategories.length} <Bi ar="قسم فرعي" en="subsections" /></> : ""}
           </p>
         </div>
       </div>
@@ -61,7 +69,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       {/* Subcategories (subfolders) */}
       {subcategories.length > 0 && (
         <div className="mt-8">
-          <h2 className="mb-3 text-sm font-semibold text-muted-foreground">الأقسام الفرعية</h2>
+          <h2 className="mb-3 text-sm font-semibold text-muted-foreground"><Bi ar="الأقسام الفرعية" en="Subsections" /></h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {subcategories.map((sub) => (
               <Link
@@ -73,7 +81,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                   <span className="grid size-9 place-items-center rounded-lg" style={{ background: `${color}1a`, color }}>
                     <Icon name={sub.icon} className="size-5" />
                   </span>
-                  <span className="font-medium group-hover:text-primary">{sub.name}</span>
+                  <span className="font-medium group-hover:text-primary">
+                    <Bi ar={bothLangs(sub.name, sub.name_alt, sub.lang).ar} en={bothLangs(sub.name, sub.name_alt, sub.lang).en} />
+                  </span>
                 </span>
                 <span className="text-xs text-muted-foreground">{sub.article_count}</span>
               </Link>
@@ -86,7 +96,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <div className="mt-10">
         {items.length > 0 ? (
           <>
-            {subcategories.length > 0 && <h2 className="mb-3 text-sm font-semibold text-muted-foreground">مقالات هذا القسم</h2>}
+            {subcategories.length > 0 && <h2 className="mb-3 text-sm font-semibold text-muted-foreground"><Bi ar="مقالات هذا القسم" en="Articles in this section" /></h2>}
             <ArticleGrid articles={items} />
           </>
         ) : subcategories.length > 0 ? (

@@ -1,19 +1,21 @@
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Icon } from "@/components/icon";
+import { Bi } from "@/components/lang/bi";
 
 export function SectionHeader({
   icon,
   title,
   subtitle,
   href,
-  hrefLabel = "عرض الكل",
+  hrefLabel,
 }: {
   icon?: string;
-  title: string;
-  subtitle?: string;
+  title: ReactNode;
+  subtitle?: ReactNode;
   href?: string;
-  hrefLabel?: string;
+  hrefLabel?: ReactNode;
 }) {
   return (
     <div className="mb-6 flex items-end justify-between gap-4">
@@ -33,7 +35,7 @@ export function SectionHeader({
           href={href}
           className="group inline-flex shrink-0 items-center gap-1 text-sm font-medium text-primary hover:underline"
         >
-          {hrefLabel}
+          {hrefLabel ?? <Bi ar="عرض الكل" en="View all" />}
           <ArrowLeft className="size-4 transition-transform group-hover:-translate-x-0.5" />
         </Link>
       )}

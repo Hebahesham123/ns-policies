@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { EmptyState } from "@/components/empty-state";
+import { Bi } from "@/components/lang/bi";
+import { bothLangs } from "@/lib/i18n";
 import { listCategoryTree } from "@/services/catalog";
 import type { CategoryNode } from "@/types";
 
@@ -17,7 +19,7 @@ function SubTree({ node, color }: { node: CategoryNode; color: string }) {
       >
         <span className="flex items-center gap-2">
           <Icon name={node.icon} className="size-4" style={{ color }} />
-          <span className="font-medium">{node.name}</span>
+          <span className="font-medium"><Bi ar={bothLangs(node.name, node.name_alt, node.lang).ar} en={bothLangs(node.name, node.name_alt, node.lang).en} /></span>
         </span>
         <span className="text-xs text-muted-foreground">{node.total_count}</span>
       </Link>
@@ -41,10 +43,17 @@ function RootCard({ root }: { root: CategoryNode }) {
           <Icon name={root.icon} className="size-6" />
         </span>
         <div className="min-w-0">
-          <h2 className="font-semibold tracking-tight group-hover:text-primary">{root.name}</h2>
-          {root.description && <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">{root.description}</p>}
+          <h2 className="font-semibold tracking-tight group-hover:text-primary">
+            <Bi ar={bothLangs(root.name, root.name_alt, root.lang).ar} en={bothLangs(root.name, root.name_alt, root.lang).en} />
+          </h2>
+          {(root.description || root.description_alt) && (
+            <p className="mt-0.5 line-clamp-2 text-sm text-muted-foreground">
+              <Bi ar={bothLangs(root.description, root.description_alt, root.lang).ar} en={bothLangs(root.description, root.description_alt, root.lang).en} />
+            </p>
+          )}
           <p className="mt-1 text-xs text-muted-foreground">
-            {root.total_count} مقال{root.children.length > 0 ? ` · ${root.children.length} قسم فرعي` : ""}
+            {root.total_count} <Bi ar="مقال" en="articles" />
+            {root.children.length > 0 ? <> · {root.children.length} <Bi ar="قسم فرعي" en="subsections" /></> : ""}
           </p>
         </div>
       </Link>
@@ -64,8 +73,10 @@ export default async function CategoriesPage() {
   return (
     <div className="container py-12">
       <div className="mb-10">
-        <h1 className="text-3xl font-bold tracking-tight">الأقسام</h1>
-        <p className="mt-2 text-muted-foreground">استكشف المعرفة منظّمة حسب المجلدات والأقسام الفرعية تمامًا كما نظّمتها.</p>
+        <h1 className="text-3xl font-bold tracking-tight"><Bi ar="الأقسام" en="Categories" /></h1>
+        <p className="mt-2 text-muted-foreground">
+          <Bi ar="استكشف المعرفة منظّمة حسب المجلدات والأقسام الفرعية تمامًا كما نظّمتها." en="Browse knowledge organized by your exact folders and subfolders." />
+        </p>
       </div>
       {tree.length ? (
         <div className="grid items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">

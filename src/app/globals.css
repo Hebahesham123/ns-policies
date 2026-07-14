@@ -72,6 +72,10 @@
   }
 }
 
+/* Language toggle — show only the variant matching the active <html data-lang> */
+html[data-lang="ar"] [data-only="en"] { display: none !important; }
+html[data-lang="en"] [data-only="ar"] { display: none !important; }
+
 @layer utilities {
   /* subtle scrollbars */
   .scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }

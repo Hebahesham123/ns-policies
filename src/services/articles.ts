@@ -3,11 +3,11 @@ import { getSupabaseServer } from "@/lib/supabase/server";
 import { decodeSlug } from "@/lib/utils";
 import type { Article, ArticleWithCategory, SearchResult, SortOption } from "@/types";
 
-const CATEGORY_SELECT = "id,name,slug,color,icon";
+const CATEGORY_SELECT = "id,name,slug,color,icon,lang,name_alt";
 // Slim projection for cards/lists — excludes the heavy `content` + `content_text`
 // columns so list pages transfer a fraction of the data (big speed win).
 const CARD_COLS =
-  "id,title,slug,summary,featured_image,category_id,keywords,difficulty,estimated_read_time,author,status,featured,pinned,views,likes,published_at,created_at,updated_at";
+  "id,title,slug,summary,featured_image,category_id,keywords,difficulty,estimated_read_time,author,status,featured,pinned,views,likes,published_at,created_at,updated_at,lang,title_alt,summary_alt";
 const LIST_SELECT = `${CARD_COLS}, category:categories(${CATEGORY_SELECT})`;
 // Full projection (includes rich-text body) — only for the article detail page.
 const DETAIL_SELECT = `*, category:categories(${CATEGORY_SELECT})`;

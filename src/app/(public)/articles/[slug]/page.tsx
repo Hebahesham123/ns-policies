@@ -9,6 +9,8 @@ import { Separator } from "@/components/ui/separator";
 import { RichText } from "@/components/rich-text";
 import { ArticleCard } from "@/components/article-card";
 import { Icon } from "@/components/icon";
+import { Bi } from "@/components/lang/bi";
+import { bothLangs, bothDocs } from "@/lib/i18n";
 import { ViewTracker } from "@/features/article/view-tracker";
 import { EngagementBar } from "@/features/article/engagement-bar";
 import { getArticleBySlug, getRelatedArticles, listPublishedSlugs } from "@/services/articles";
@@ -48,6 +50,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const related = await getRelatedArticles(article, 3);
   const color = article.category?.color ?? "#6366f1";
 
+  const t = bothLangs(article.title, article.title_alt, article.lang);
+  const s = bothLangs(article.summary, article.summary_alt, article.lang);
+  const docs = bothDocs(article.content, article.content_alt, article.lang);
+  const catName = article.category
+    ? bothLangs(article.category.name, article.category.name_alt, article.category.lang)
+    : null;
+  const diffEn: Record<string, string> = { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -67,32 +77,34 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       <Breadcrumb
         items={[
-          ...(article.category ? [{ label: article.category.name, href: `/categories/${article.category.slug}` }] : []),
-          { label: article.title },
+          ...(article.category && catName
+            ? [{ label: <Bi ar={catName.ar} en={catName.en} />, href: `/categories/${article.category.slug}` }]
+            : []),
+          { label: <Bi ar={t.ar} en={t.en} /> },
         ]}
       />
 
       <header className="mt-6">
-        {article.category && (
+        {article.category && catName && (
           <Link
             href={`/categories/${article.category.slug}`}
             className="inline-flex items-center gap-1.5 text-sm font-medium"
             style={{ color }}
           >
             <Icon name={article.category.icon} className="size-4" />
-            {article.category.name}
+            <Bi ar={catName.ar} en={catName.en} />
           </Link>
         )}
-        <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl">{article.title}</h1>
-        {article.summary && <p className="mt-3 text-lg text-muted-foreground">{article.summary}</p>}
+        <h1 className="mt-3 text-balance text-3xl font-bold tracking-tight sm:text-4xl"><Bi ar={t.ar} en={t.en} /></h1>
+        {(s.ar || s.en) && <p className="mt-3 text-lg text-muted-foreground"><Bi ar={s.ar} en={s.en} /></p>}
 
         <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
           {article.author && <span className="inline-flex items-center gap-1.5"><User className="size-4" /> {article.author}</span>}
           <span className="inline-flex items-center gap-1.5"><CalendarDays className="size-4" /> {formatDate(article.published_at)}</span>
-          <span className="inline-flex items-center gap-1.5"><RefreshCw className="size-4" /> آخر تحديث {formatDate(article.updated_at)}</span>
-          <span className="inline-flex items-center gap-1.5"><Clock className="size-4" /> {article.estimated_read_time} دقيقة</span>
+          <span className="inline-flex items-center gap-1.5"><RefreshCw className="size-4" /> <Bi ar="آخر تحديث" en="Updated" /> {formatDate(article.updated_at)}</span>
+          <span className="inline-flex items-center gap-1.5"><Clock className="size-4" /> {article.estimated_read_time} <Bi ar="دقيقة" en="min" /></span>
           <span className="inline-flex items-center gap-1.5"><Eye className="size-4" /> {formatCompact(article.views)}</span>
-          <Badge variant="secondary">{DIFFICULTY_LABELS[article.difficulty]}</Badge>
+          <Badge variant="secondary"><Bi ar={DIFFICULTY_LABELS[article.difficulty]} en={diffEn[article.difficulty]} /></Badge>
         </div>
       </header>
 
@@ -104,11 +116,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       <Separator className="my-8" />
 
-      <RichText content={article.content} />
+      <Bi as="div" ar={<RichText content={docs.ar} />} en={<RichText content={docs.en} />} />
 
       {article.source && (
         <p className="mt-8 text-sm text-muted-foreground">
-          المصدر: <span className="text-foreground">{article.source}</span>
+          <Bi ar="المصدر:" en="Source:" /> <span className="text-foreground">{article.source}</span>
         </p>
       )}
 
@@ -118,7 +130,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="mb-6 text-xl font-semibold tracking-tight">مقالات ذات صلة</h2>
+          <h2 className="mb-6 text-xl font-semibold tracking-tight"><Bi ar="مقالات ذات صلة" en="Related articles" /></h2>
           <div className="grid gap-5 sm:grid-cols-3">
             {related.map((a) => (
               <ArticleCard key={a.id} article={a} />

@@ -1,11 +1,16 @@
 import { HeroSearch } from "@/features/search/hero-search";
+import { Bi } from "@/components/lang/bi";
 
 export function Hero({
   title,
   subtitle,
+  titleEn,
+  subtitleEn,
 }: {
   title: string;
   subtitle: string;
+  titleEn: string;
+  subtitleEn: string;
 }) {
   return (
     <section className="relative overflow-hidden border-b">
@@ -17,12 +22,14 @@ export function Hero({
 
       <div className="container flex flex-col items-center py-20 text-center sm:py-28">
         <span className="mb-5 inline-flex items-center gap-2 rounded-full border bg-background/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-          <span className="size-1.5 rounded-full bg-success" /> قاعدة المعرفة الداخلية
+          <span className="size-1.5 rounded-full bg-success" /> <Bi ar="قاعدة المعرفة الداخلية" en="Internal knowledge base" />
         </span>
         <h1 className="max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-          {title}
+          <Bi ar={title} en={titleEn} />
         </h1>
-        <p className="mt-4 max-w-xl text-balance text-lg text-muted-foreground">{subtitle}</p>
+        <p className="mt-4 max-w-xl text-balance text-lg text-muted-foreground">
+          <Bi ar={subtitle} en={subtitleEn} />
+        </p>
 
         <div className="mt-8 w-full">
           <HeroSearch />

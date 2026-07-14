@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Icon } from "@/components/icon";
+import { Bi } from "@/components/lang/bi";
 import { formatDate } from "@/lib/utils";
+import { bothLangs } from "@/lib/i18n";
 import type { CategoryWithCount } from "@/types";
 
 export function CategoryCard({ category }: { category: CategoryWithCount }) {
   const color = category.color ?? "#6366f1";
+  const name = bothLangs(category.name, category.name_alt, category.lang);
+  const desc = bothLangs(category.description, category.description_alt, category.lang);
   return (
     <Link
       href={`/categories/${category.slug}`}
@@ -19,15 +23,15 @@ export function CategoryCard({ category }: { category: CategoryWithCount }) {
         <Icon name={category.icon} className="size-6" />
       </div>
       <div className="flex items-start justify-between gap-2">
-        <h3 className="font-semibold tracking-tight group-hover:text-primary">{category.name}</h3>
+        <h3 className="font-semibold tracking-tight group-hover:text-primary"><Bi ar={name.ar} en={name.en} /></h3>
         <ArrowUpRight className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
       </div>
-      {category.description && (
-        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{category.description}</p>
+      {(desc.ar || desc.en) && (
+        <p className="mt-1 line-clamp-2 text-sm text-muted-foreground"><Bi ar={desc.ar} en={desc.en} /></p>
       )}
       <div className="mt-4 flex items-center justify-between text-xs text-muted-foreground">
-        <span className="font-medium text-foreground">{category.article_count} مقالات</span>
-        <span>آخر تحديث {formatDate(category.updated_at)}</span>
+        <span className="font-medium text-foreground">{category.article_count} <Bi ar="مقالات" en="articles" /></span>
+        <span><Bi ar="آخر تحديث" en="Updated" /> {formatDate(category.updated_at)}</span>
       </div>
     </Link>
   );

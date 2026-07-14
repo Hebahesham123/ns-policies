@@ -20,12 +20,12 @@ export const DIFFICULTY_LABELS: Record<string, string> = {
 
 export const PAGE_SIZE = 12;
 
-/** Public navigation. */
+/** Public navigation (bilingual labels). */
 export const NAV = [
-  { href: "/", label: "الرئيسية" },
-  { href: "/categories", label: "الأقسام" },
-  { href: "/search", label: "البحث" },
-  { href: "/trending", label: "الرائج" },
+  { href: "/", label: "الرئيسية", en: "Home" },
+  { href: "/categories", label: "الأقسام", en: "Categories" },
+  { href: "/search", label: "البحث", en: "Search" },
+  { href: "/trending", label: "الرائج", en: "Trending" },
 ];
 
 /** Admin sidebar navigation. */

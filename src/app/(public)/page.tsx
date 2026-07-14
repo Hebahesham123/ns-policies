@@ -4,6 +4,7 @@ import { TrendingSearches } from "@/features/home/trending-searches";
 import { SectionHeader } from "@/components/section-header";
 import { ArticleGrid } from "@/components/article-grid";
 import { CategoryCard } from "@/components/category-card";
+import { Bi } from "@/components/lang/bi";
 import { TopicRequestCta } from "@/features/topics/topic-request-cta";
 import { getRecentlyUpdated } from "@/services/articles";
 import { listCategoryTree, listHotTopics, listTrendingSearches } from "@/services/catalog";
@@ -29,20 +30,22 @@ export default async function HomePage() {
       <Hero
         title={hp.hero_title ?? "كل ما يحتاج فريقك إلى معرفته"}
         subtitle={hp.hero_subtitle ?? "السياسات والإجراءات والخبرات — قابلة للبحث ومنظّمة ومحدّثة دائمًا."}
+        titleEn="Everything your team needs to know"
+        subtitleEn="Policies, procedures & know-how — searchable, organized, always up to date."
       />
 
       <div className="container space-y-20 py-16">
         {/* Hot topics */}
         {hotTopics.length > 0 && (
           <section>
-            <SectionHeader icon="flame" title="المواضيع المميزة" subtitle="أبرز المختارات التي يقرأها الفريق الآن." />
+            <SectionHeader icon="flame" title={<Bi ar="المواضيع المميزة" en="Hot topics" />} subtitle={<Bi ar="أبرز المختارات التي يقرأها الفريق الآن." en="Curated highlights the team is reading now." />} />
             <HotTopics topics={hotTopics} />
           </section>
         )}
 
         {/* Categories */}
         <section>
-          <SectionHeader icon="layout-grid" title="تصفّح حسب القسم" subtitle="اعثر على المحتوى منظّمًا حسب القسم." href="/categories" />
+          <SectionHeader icon="layout-grid" title={<Bi ar="تصفّح حسب القسم" en="Browse by category" />} subtitle={<Bi ar="اعثر على المحتوى منظّمًا حسب القسم." en="Find content organized by section." />} href="/categories" />
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {categories.slice(0, 6).map((c) => (
               <CategoryCard key={c.id} category={{ ...c, article_count: c.total_count }} />
@@ -53,7 +56,7 @@ export default async function HomePage() {
         {/* Trending searches */}
         {trending.length > 0 && (
           <section>
-            <SectionHeader icon="trending-up" title="عمليات البحث الرائجة" subtitle="ما الذي يبحث عنه الناس." href="/trending" />
+            <SectionHeader icon="trending-up" title={<Bi ar="عمليات البحث الرائجة" en="Trending searches" />} subtitle={<Bi ar="ما الذي يبحث عنه الناس." en="What people are searching for." />} href="/trending" />
             <TrendingSearches searches={trending} />
           </section>
         )}
@@ -61,7 +64,7 @@ export default async function HomePage() {
         {/* Recently updated */}
         {recentlyUpdated.length > 0 && (
           <section>
-            <SectionHeader icon="refresh-cw" title="المحدّثة حديثًا" subtitle="محتوى تمّت مراجعته حديثًا." />
+            <SectionHeader icon="refresh-cw" title={<Bi ar="المحدّثة حديثًا" en="Recently updated" />} subtitle={<Bi ar="محتوى تمّت مراجعته حديثًا." en="Freshly reviewed content." />} />
             <ArticleGrid articles={recentlyUpdated} />
           </section>
         )}
