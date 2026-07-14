@@ -15,18 +15,29 @@ type Node = {
   marks?: Mark[];
 };
 
+// PowerShell's ConvertTo-Json can collapse single-element arrays to objects, so
+// coerce content/marks back to arrays defensively.
+function asArray<T>(v: T[] | T | undefined): T[] {
+  return Array.isArray(v) ? v : v ? [v] : [];
+}
+
 function renderMarks(text: string, marks: Mark[] | undefined, key: React.Key): React.ReactNode {
-  if (!marks?.length) return text;
-  return marks.reduce<React.ReactNode>((acc, mark, i) => {
+  const list = asArray(marks);
+  if (!list.length) return text;
+  return list.reduce<React.ReactNode>((acc, mark, i) => {
     switch (mark.type) {
       case "bold":
         return <strong key={i}>{acc}</strong>;
       case "italic":
         return <em key={i}>{acc}</em>;
+      case "underline":
+        return <u key={i}>{acc}</u>;
       case "code":
         return <code key={i}>{acc}</code>;
       case "strike":
         return <s key={i}>{acc}</s>;
+      case "highlight":
+        return <mark key={i}>{acc}</mark>;
       case "link":
         return (
           <a key={i} href={mark.attrs?.href} target="_blank" rel="noopener noreferrer">
@@ -40,7 +51,8 @@ function renderMarks(text: string, marks: Mark[] | undefined, key: React.Key): R
 }
 
 function renderNode(node: Node, key: React.Key): React.ReactNode {
-  const children = node.content?.map((c, i) => renderNode(c, i));
+  const kids = asArray(node.content);
+  const children = kids.map((c, i) => renderNode(c, i));
 
   switch (node.type) {
     case "doc":
@@ -63,7 +75,7 @@ function renderNode(node: Node, key: React.Key): React.ReactNode {
     case "codeBlock":
       return (
         <pre key={key}>
-          <code>{node.content?.map((c) => c.text).join("")}</code>
+          <code>{kids.map((c) => c.text).join("")}</code>
         </pre>
       );
     case "horizontalRule":
@@ -88,7 +100,7 @@ function renderNode(node: Node, key: React.Key): React.ReactNode {
     case "text":
       return <React.Fragment key={key}>{renderMarks(node.text ?? "", node.marks, key)}</React.Fragment>;
     default:
-      return children ? <div key={key}>{children}</div> : null;
+      return children.length ? <div key={key}>{children}</div> : null;
   }
 }
 
